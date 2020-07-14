@@ -1,70 +1,68 @@
 package com.oscarce10.modelo;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Observable;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class Tablero {
-    private final int ALTO;
-    private final int ANCHO;
-    private Gusano gusano;
+public class Tablero extends Observable {
+    public static final int ALTO = 17;
+    public static final int ANCHO = 12;
     private int [][] tablero;
     public static final int CABEZA = 1;
     public static final int CUERPO = 2;
     public static final int FRUTA = 3;
 
 
-    public Tablero(int ALTO, int ANCHO) {
-        this.ALTO = ALTO;
-        this.ANCHO = ANCHO;
-    }
-
     public Tablero() {
-        this.ALTO = 20;
-        this.ANCHO = 18;
-        this.tablero = new int[this.ALTO][this.ANCHO];
-    }
-
-    public int getALTO() {
-        return ALTO;
-    }
-
-    public int getANCHO() {
-        return ANCHO;
-    }
-
-    public Gusano getGusano() {
-        return gusano;
-    }
-
-    public void setGusano(Gusano gusano) {
-        this.gusano = gusano;
+        this.tablero = new int[ALTO][ANCHO];
     }
 
     public int[][] getTablero() {
         return tablero;
     }
 
-    public void setTablero(int[][] tablero) {
-        this.tablero = tablero;
-    }
 
-    public void crearGusano(){
-        this.gusano = new Gusano();
-        this.gusano.crearGusano();
-        Coordenada cabeza = this.gusano.getGusano().get(0);
-        this.tablero[cabeza.getFila()][cabeza.getColumna()] = CABEZA;
-        Coordenada cuerpo = this.gusano.getGusano().get(1);
-        this.tablero[cuerpo.getFila()][cuerpo.getColumna()] = CUERPO;
-    }
-
-    public void agregarFruta(){
+    public Coordenada agregarFruta(){
         int fila;
         int columna;
         do{
-            fila = ThreadLocalRandom.current().nextInt(this.ALTO - 1);
-            columna = ThreadLocalRandom.current().nextInt(this.ANCHO - 1);
+            fila = ThreadLocalRandom.current().nextInt(ALTO - 1);
+            columna = ThreadLocalRandom.current().nextInt(ANCHO - 1);
         } while(this.tablero[fila][columna] != 0);
         tablero[fila][columna] = FRUTA;
-
+        return new Coordenada(fila, columna);
     }
+
+//    public int moverGusano(){
+//        while( (this.gusano.getGusano().get(0).getFila() > -1 && this.gusano.getGusano().get(0).getFila() < ALTO) ||
+//                (this.gusano.getGusano().get(0).getColumna() > -1 && this.gusano.getGusano().get(0).getColumna() < ANCHO )){
+//            switch (this.gusano.getGusano().get(0).getDireccion()){
+//                case Gusano.DERECHA:
+//                    this.gusano.avanzaDerecha();
+//                    break;
+//
+//                case Gusano.ABAJO:
+//                    this.gusano.avanzaAbajo();
+//                    break;
+//
+//                case Gusano.IZQUIERDA:
+//                    this.gusano.avanzaIzquierda();
+//                    break;
+//
+//                case Gusano.ARRIBA:
+//                    this.gusano.avanzaArriba();
+//                    break;
+//            }
+//            this.tablero[this.gusano.getGusano().get(0).getFila()][this.gusano.getGusano().get(0).getColumna()] = 1;
+//            this.tablero[this.gusano.getGusano().get(this.gusano.getGusano().size() - 1).getFila()]
+//                    [this.gusano.getGusano().get(this.gusano.getGusano().size() - 1).getColumna()] = 0;
+//            return this.gusano.getGusano().get(0).getDireccion();
+//
+//        }
+//        return Gusano.PERDER;
+//    }
 
 }

@@ -1,98 +1,52 @@
 package com.oscarce10.modelo;
 
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import java.util.ArrayList;
+import java.util.Observable;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
-
-import com.oscarce10.gusano.Juego;
-import com.oscarce10.gusano.R;
-
-public class Partida {
+public class Partida extends Observable {
     private int score;
     private int record;
-    private Tablero obTablero;
-    private Juego juego;
-    private LinearLayout tableroCont;
-    int [][] tablero;
+    private Tablero obT;
+    private Gusano gusano;
 
-    public Partida(int score, int record, Tablero tablero, Juego juego) {
+    public Partida(int score, int record, int[][] tablero) {
         this.score = score;
         this.record = record;
-        this.obTablero = tablero;
-        this.juego = juego;
+        this.obT = new Tablero();
     }
 
-    public Partida(Tablero tablero, Juego juego) {
+    public Partida() {
         this.score = 0;
         this.record = 0;
-        this.obTablero = tablero;
-        this.juego = juego;
+        this.obT = new Tablero();
+        this.gusano = new Gusano();
     }
 
-    public Partida(Juego juego) {
-        this.score = 0;
-        this.record = 0;
-        this.juego = juego;
-        this.obTablero = new Tablero();
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public int getRecord() {
+        return record;
+    }
+
+    public void setRecord(int record) {
+        this.record = record;
     }
 
     public void iniciarPartida(){
-        // Score
-        TextView score = this.juego.findViewById(R.id.score);
-        score.setText(String.valueOf(this.score));
-        // Record
-        TextView record = this.juego.findViewById(R.id.record);
-        record.setText(String.valueOf(this.record));
-        this.obTablero.crearGusano();
-        this.obTablero.agregarFruta();
-        mostrarTablero();
-    }
-
-    public void mostrarTablero(){
-        // Crear y mostrar tablero
-        this.tableroCont = (LinearLayout) this.juego.findViewById(R.id.board);
-        this.tablero = this.obTablero.getTablero();
-        for (int i = 0; i < tablero.length; i++){
-            LinearLayout aux = new LinearLayout(this.juego);
-            for (int j = 0; j < tablero[i].length; j++){
-                ConstraintLayout campo = new ConstraintLayout(this.juego);
-                ImageView cuadro = new ImageView(this.juego);
-                cuadro.setBackgroundResource(R.drawable.ic_rec);
-                campo.addView(cuadro);
-                if (tablero[i][j] == Tablero.CABEZA){
-                    ImageView cab = new ImageView(this.juego);
-                    switch (obTablero.getGusano().getGusano().get(0).getDireccion()){
-                        case Gusano.DERECHA:
-                            cab.setBackgroundResource(R.drawable.ic_headgameright);
-                            break;
-
-                        case Gusano.ABAJO:
-                            cab.setBackgroundResource(R.drawable.ic_headgamedown);
-                            break;
-
-                        case Gusano.IZQUIERDA:
-                            cab.setBackgroundResource(R.drawable.ic_headgameleft);
-                            break;
-
-                        case Gusano.ARRIBA:
-                            cab.setBackgroundResource(R.drawable.ic_headgameup);
-                            break;
-                    }
-                    campo.addView(cab);
-                }else if(tablero[i][j] == Tablero.CUERPO){
-                    ImageView cuerpo = new ImageView(this.juego);
-                    cuerpo.setBackgroundResource(R.drawable.ic_bodygame);
-                    campo.addView(cuerpo);
-                } else if (tablero[i][j] == Tablero.FRUTA){
-                    ImageView fruta = new ImageView(this.juego);
-                    fruta.setBackgroundResource(R.drawable.ic_apple);
-                    campo.addView(fruta);
-                }
-                aux.addView(campo);
-            }
-            tableroCont.addView(aux);
-        }
+        this.gusano.crearGusano();
+        this.obT.getTablero()[this.gusano.getGusano().get(0).getFila()][this.gusano.getGusano().get(0).getColumna()]= Tablero.CABEZA;
+        this.obT.getTablero()[this.gusano.getGusano().get(1).getFila()][this.gusano.getGusano().get(1).getColumna()] = Tablero.CUERPO;
+        ArrayList <Object> obG = new ArrayList<>();
+        obG.add(this.gusano);
+        obG.add(this.gusano.getDireccion());
+        obG.add(this.obT.agregarFruta());
+        this.setChanged();
+        this.notifyObservers(obG);
     }
 }
