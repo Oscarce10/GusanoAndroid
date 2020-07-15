@@ -45,6 +45,7 @@ public class PartidaVTA implements Observer {
         main.setBackgroundColor(Color.parseColor("#273238"));
 
         this.recordNum.setText("" + record);
+        this.scoreNum.setText("" + 0);
 
         tiles = new ConstraintLayout[Tablero.ALTO][Tablero.ANCHO];
         this.grilla.setRowCount(Tablero.ALTO);
@@ -170,24 +171,24 @@ public class PartidaVTA implements Observer {
             if(i == 0){
                 switch (direccion){
                     case Gusano.ABAJO:
-                        gus.setBackgroundResource(R.drawable.ic_headgamedown);
+                        gus.setBackgroundResource(R.drawable.ic_headgametinydown);
                         break;
 
                     case Gusano.ARRIBA:
-                        gus.setBackgroundResource(R.drawable.ic_headgameup);
+                        gus.setBackgroundResource(R.drawable.ic_headgametinyup);
                         break;
 
                     case Gusano.DERECHA:
-                        gus.setBackgroundResource(R.drawable.ic_headgameright);
+                        gus.setBackgroundResource(R.drawable.ic_headgametinyright);
                         break;
 
                     case Gusano.IZQUIERDA:
-                        gus.setBackgroundResource(R.drawable.ic_headgameleft);
+                        gus.setBackgroundResource(R.drawable.ic_headgametinyleft);
                         break;
                 }
 
             }else {
-                gus.setBackgroundResource(R.drawable.ic_bodygame);
+                gus.setBackgroundResource(R.drawable.ic_bodygametiny);
             }
             gus.setMaxHeight(tiles[0][0].getMaxHeight());
             gus.setMinimumHeight(tiles[0][0].getMaxHeight());
@@ -196,7 +197,7 @@ public class PartidaVTA implements Observer {
             tiles[gusano.getGusano().get(i).getFila()][gusano.getGusano().get(i).getColumna()].addView(gus);
         }
         ImageView apple = new ImageView(this.juego);
-        apple.setBackgroundResource(R.drawable.ic_apple);
+        apple.setBackgroundResource(R.drawable.ic_appletiny);
         apple.setMaxHeight(tiles[0][0].getMaxHeight());
         apple.setMinimumHeight(tiles[0][0].getMaxHeight());
         apple.setMinimumWidth(tiles[0][0].getMinWidth());
