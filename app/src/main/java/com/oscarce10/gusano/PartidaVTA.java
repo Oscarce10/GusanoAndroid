@@ -3,9 +3,12 @@ package com.oscarce10.gusano;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.view.Display;
+import android.view.ViewGroup;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.oscarce10.modelo.Coordenada;
@@ -24,6 +27,8 @@ public class PartidaVTA implements Observer {
     private ConstraintLayout main;
     private ConstraintLayout tiles[][];
     private Juego juego;
+    private int width;
+    private int height;
 
     public PartidaVTA(TextView scoreNum, TextView recordNum, GridLayout grilla) {
         this.scoreNum = scoreNum;
@@ -39,8 +44,8 @@ public class PartidaVTA implements Observer {
         Display display = juego.getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
-        int width = size.x;
-        int height = size.y;
+        this.width = size.x;
+        this.height = size.y;
         this.main = juego.findViewById(R.id.main);
         main.setBackgroundColor(Color.parseColor("#273238"));
 
@@ -62,147 +67,150 @@ public class PartidaVTA implements Observer {
                 grilla.addView(tiles[i][j]);
             }
         }
+
     }
 
-//    public void iniciarPartida(){
-//        try {
-//            BufferedReader re = new BufferedReader(new FileReader("src/record"));
-//            this.record = Integer.parseInt(re.readLine());
-//        } catch (IOException e) {
-//            this.record = 150;
-//        }
-//        // Score
-//        TextView score = this.juego.findViewById(R.id.scoreNum);
-//        score.setText(String.valueOf(this.score));
-//        // Record
-//        TextView record = this.juego.findViewById(R.id.recordNum);
-//        record.setText(String.valueOf(this.record));
-//        //this.obTablero.crearGusano();
-//        //this.obTablero.agregarFruta();
-//        crearTablero();
-//    }
-//
-//
-//    public void actualizarCuadro(int fila, int columna){
-//        LinearLayout tab = (LinearLayout) this.juego.findViewById(R.id.board);
-//        ConstraintLayout campo = tab.findViewWithTag("" + fila + "" + columna);
-//        if (tablero[fila][columna] == Tablero.CABEZA){
-//            ImageView cab = new ImageView(this.juego);
-//            switch (obTablero.getGusano().getGusano().get(0).getDireccion()){
-//                case Gusano.DERECHA:
-//                    cab.setBackgroundResource(R.drawable.ic_headgameright);
-//                    break;
-//
-//                case Gusano.ABAJO:
-//                    cab.setBackgroundResource(R.drawable.ic_headgamedown);
-//                    break;
-//
-//                case Gusano.IZQUIERDA:
-//                    cab.setBackgroundResource(R.drawable.ic_headgameleft);
-//                    break;
-//
-//                case Gusano.ARRIBA:
-//                    cab.setBackgroundResource(R.drawable.ic_headgameup);
-//                    break;
-//            }
-//            campo.addView(cab);
-//        }else if(tablero[fila][columna] == Tablero.CUERPO){
-//            ImageView cuerpo = new ImageView(this.juego);
-//            cuerpo.setBackgroundResource(R.drawable.ic_bodygame);
-//            campo.addView(cuerpo);
-//        } else if (tablero[fila][columna] == Tablero.FRUTA){
-//            ImageView fruta = new ImageView(this.juego);
-//            fruta.setBackgroundResource(R.drawable.ic_apple);
-//            campo.addView(fruta);
-//        }
-//    }
-//
-//    public void run(){
-//        int movida;
-//        while ( (movida = this.obTablero.moverGusano()) != Gusano.PERDER) {
-//            Coordenada cabeza, cola;
-//            cabeza = this.obTablero.getGusano().getGusano().get(0);
-//            cola = this.obTablero.getGusano().getGusano().get(this.obTablero.getGusano().getGusano().size()-1);
-//            switch (movida){
-//                case Gusano.DERECHA:
-//                    actualizarCuadro(cabeza.getFila(), cabeza.getColumna());
-//                    actualizarCuadro(cabeza.getFila(), cabeza.getColumna() - 1);
-//                    actualizarCuadro(cola.getFila(), cola.getColumna());
-//                    actualizarCuadro(cola.getFila(), cola.getColumna() - 1);
-//                    break;
-//                case Gusano.ABAJO:
-//                    actualizarCuadro(cabeza.getFila(), cabeza.getColumna());
-//                    actualizarCuadro(cabeza.getFila() + 1, cabeza.getColumna());
-//                    actualizarCuadro(cola.getFila(), cola.getColumna());
-//                    actualizarCuadro(cola.getFila() - 1, cola.getColumna());
-//                    break;
-//
-//                case Gusano.IZQUIERDA:
-//                    actualizarCuadro(cabeza.getFila(), cabeza.getColumna());
-//                    actualizarCuadro(cabeza.getFila(), cabeza.getColumna() + 1);
-//                    actualizarCuadro(cola.getFila(), cola.getColumna());
-//                    actualizarCuadro(cola.getFila(), cola.getColumna() + 1);
-//                    break;
-//
-//                case Gusano.ARRIBA:
-//                    actualizarCuadro(cabeza.getFila(), cabeza.getColumna());
-//                    actualizarCuadro(cabeza.getFila() - 1, cabeza.getColumna());
-//                    actualizarCuadro(cola.getFila(), cola.getColumna());
-//                    actualizarCuadro(cola.getFila() + 1, cola.getColumna());
-//                    break;
-//            }
-//            try {
-//                sleep(1000);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        System.exit(0);
-//    }
-//
     @Override
     public void update(Observable o, Object arg) {
         ArrayList <Object> args = (ArrayList<Object>) arg;
-        Gusano gusano = (Gusano) args.get(0);
-        int direccion = Integer.parseInt(args.get(1).toString());
-        Coordenada fruta = (Coordenada) args.get(2);
-        for (int i = 0; i < gusano.getGusano().size(); i++){
-            ImageView gus = new ImageView(this.juego);
-            if(i == 0){
-                switch (direccion){
-                    case Gusano.ABAJO:
-                        gus.setBackgroundResource(R.drawable.ic_headgametinydown);
-                        break;
+        int accion = Integer.parseInt(args.get(0).toString());
+        if(accion == Partida.AGREGAR) {
+            Gusano gusano = (Gusano) args.get(1);
+            int direccion = Integer.parseInt(args.get(2).toString());
+            Coordenada fruta = (Coordenada) args.get(3);
+            for (int i = 0; i < gusano.getGusano().size(); i++){
+                ImageView gus = new ImageView(this.juego);
+                if(i == 0){
+                    switch (direccion){
+                        case Gusano.ABAJO:
+                            gus.setBackgroundResource(R.drawable.ic_headgametinydown);
+                            break;
 
-                    case Gusano.ARRIBA:
-                        gus.setBackgroundResource(R.drawable.ic_headgametinyup);
-                        break;
+                        case Gusano.ARRIBA:
+                            gus.setBackgroundResource(R.drawable.ic_headgametinyup);
+                            break;
 
-                    case Gusano.DERECHA:
-                        gus.setBackgroundResource(R.drawable.ic_headgametinyright);
-                        break;
+                        case Gusano.DERECHA:
+                            gus.setBackgroundResource(R.drawable.ic_headgametinyright);
+                            break;
 
-                    case Gusano.IZQUIERDA:
-                        gus.setBackgroundResource(R.drawable.ic_headgametinyleft);
-                        break;
+                        case Gusano.IZQUIERDA:
+                            gus.setBackgroundResource(R.drawable.ic_headgametinyleft);
+                            break;
+                    }
+
+                }else {
+                    gus.setBackgroundResource(R.drawable.ic_bodygametiny);
                 }
+                gus.setMaxHeight(tiles[0][0].getMaxHeight());
+                gus.setMinimumHeight(tiles[0][0].getMaxHeight());
+                gus.setMinimumWidth(tiles[0][0].getMinWidth());
+                gus.setMaxWidth(tiles[0][0].getMaxWidth());
+                tiles[gusano.getGusano().get(i).getFila()][gusano.getGusano().get(i).getColumna()].addView(gus);
+            }
+            ImageView apple = new ImageView(this.juego);
+            apple.setBackgroundResource(R.drawable.ic_appletiny);
+            apple.setMaxHeight(tiles[0][0].getMaxHeight());
+            apple.setMinimumHeight(tiles[0][0].getMaxHeight());
+            apple.setMinimumWidth(tiles[0][0].getMinWidth());
+            apple.setMaxWidth(tiles[0][0].getMaxWidth());
+            tiles[fruta.getFila()][fruta.getColumna()].addView(apple);
+        }else if(accion == Partida.REMOVER){
+            Coordenada aux = (Coordenada) args.get(1);
+            // Se elimina la cola del tablero
+            final Coordenada finalAux2 = aux;
+            final ConstraintLayout field = new ConstraintLayout(this.juego);
+            field.setBackgroundResource(R.drawable.tile);
+            field.setMinHeight((int) (height * 0.65 / Tablero.ALTO));
+            field.setMinWidth((int) (width * 0.90 / Tablero.ANCHO));
+            field.setMaxHeight((int) (height * 0.65 / Tablero.ALTO));
+            field.setMaxWidth((int) (width * 0.90 / Tablero.ANCHO));
+            // Only the original thread that created a view hierarchy can touch its views
+            // https://es.stackoverflow.com/questions/250763/only-the-original-thread-that-created-a-view-hierarchy-can-touch-its-views
+            this.juego.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    grilla.removeViewAt((finalAux2.getFila() * Tablero.ANCHO) + finalAux2.getColumna());
+                    grilla.addView(field, (finalAux2.getFila() * Tablero.ANCHO) + finalAux2.getColumna());
+                }
+            });
 
-            }else {
-                gus.setBackgroundResource(R.drawable.ic_bodygametiny);
+            // Agregar nueva cabeza a la vista dependiendo de la direccion
+            aux = (Coordenada) args.get(2);
+            ImageView gus = new ImageView(this.juego);
+            switch (Integer.parseInt(args.get(4).toString())){
+                case Gusano.ABAJO:
+                    gus.setBackgroundResource(R.drawable.ic_headgametinydown);
+                    break;
+
+                case Gusano.ARRIBA:
+                    gus.setBackgroundResource(R.drawable.ic_headgametinyup);
+                    break;
+
+                case Gusano.DERECHA:
+                    gus.setBackgroundResource(R.drawable.ic_headgametinyright);
+                    break;
+
+                case Gusano.IZQUIERDA:
+                    gus.setBackgroundResource(R.drawable.ic_headgametinyleft);
+                    break;
             }
             gus.setMaxHeight(tiles[0][0].getMaxHeight());
             gus.setMinimumHeight(tiles[0][0].getMaxHeight());
             gus.setMinimumWidth(tiles[0][0].getMinWidth());
             gus.setMaxWidth(tiles[0][0].getMaxWidth());
-            tiles[gusano.getGusano().get(i).getFila()][gusano.getGusano().get(i).getColumna()].addView(gus);
+            ConstraintLayout campo = new ConstraintLayout(this.juego);
+            campo.setBackgroundResource(R.drawable.ic_rec);
+            campo.addView(gus);
+
+            // Only the original thread that created a view hierarchy can touch its views
+            // https://es.stackoverflow.com/questions/250763/only-the-original-thread-that-created-a-view-hierarchy-can-touch-its-views
+            final Coordenada finalAux = aux; // Final porque asi lo exige la inner
+            final ConstraintLayout finalCampo = campo;
+            this.juego.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    grilla.removeViewAt((finalAux.getFila() * Tablero.ANCHO) + finalAux.getColumna());
+                    grilla.addView(finalCampo, (finalAux.getFila() * Tablero.ANCHO) + finalAux.getColumna());
+                }
+            });
+
+
+            // Eliminar la antigua cabeza y reemplazar por el cuerpo
+            aux = (Coordenada) args.get(3);
+            campo = new ConstraintLayout(this.juego);
+            campo.setBackgroundResource(R.drawable.ic_rec);
+            gus = new ImageView(this.juego);
+            gus.setBackgroundResource(R.drawable.ic_bodygametiny);
+            gus.setMaxHeight(tiles[0][0].getMaxHeight());
+            gus.setMinimumHeight(tiles[0][0].getMaxHeight());
+            gus.setMinimumWidth(tiles[0][0].getMinWidth());
+            gus.setMaxWidth(tiles[0][0].getMaxWidth());
+            campo.addView(gus);
+            // Only the original thread that created a view hierarchy can touch its views
+            // https://es.stackoverflow.com/questions/250763/only-the-original-thread-that-created-a-view-hierarchy-can-touch-its-views
+            final Coordenada finalAux1 = aux;
+            final ConstraintLayout finalCampo1 = campo;
+            this.juego.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    grilla.removeViewAt((finalAux1.getFila() * Tablero.ANCHO) + finalAux1.getColumna());
+                    grilla.addView(finalCampo1, (finalAux1.getFila() * Tablero.ANCHO) + finalAux1.getColumna());
+                }
+            });
+
+        }else if (accion == Partida.PERDER){
+            // Toca para que muestre toast
+            // https://es.stackoverflow.com/questions/250763/only-the-original-thread-that-created-a-view-hierarchy-can-touch-its-views
+            this.juego.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(juego, "Ha perdido", Toast.LENGTH_SHORT).show();
+                }
+            });
+            this.juego.finish();
         }
-        ImageView apple = new ImageView(this.juego);
-        apple.setBackgroundResource(R.drawable.ic_appletiny);
-        apple.setMaxHeight(tiles[0][0].getMaxHeight());
-        apple.setMinimumHeight(tiles[0][0].getMaxHeight());
-        apple.setMinimumWidth(tiles[0][0].getMinWidth());
-        apple.setMaxWidth(tiles[0][0].getMaxWidth());
-        tiles[fruta.getFila()][fruta.getColumna()].addView(apple);
+
 
     }
 }

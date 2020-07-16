@@ -43,7 +43,7 @@ public class Gusano {
         int columna = (int)(Math.random() * (((Tablero.ANCHO - 3) - 2) + 1)) + 2;
         System.out.println("------x: " + columna + " ----------y: " + fila);
         this.gusano.add(new Coordenada(fila, columna));
-        this.direccion = ThreadLocalRandom.current().nextInt(3);
+        this.direccion = (int) (Math.random() * 3);
         Coordenada cabeza = this.gusano.get(0);
         switch (this.direccion){
             case DERECHA:

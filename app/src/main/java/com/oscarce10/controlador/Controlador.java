@@ -1,35 +1,57 @@
 package com.oscarce10.controlador;
 
-import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
+import android.view.MotionEvent;
+import android.view.View;
 
-import com.oscarce10.gusano.R;
+import com.oscarce10.gusano.Juego;
+import com.oscarce10.modelo.Gusano;
 
-import java.util.Observable;
-import java.util.Observer;
+public class Controlador {
+    private Juego mainActivity;
 
-public class Controlador extends AppCompatActivity implements Observer {
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    public Controlador(Juego mainActivity){
+        this.mainActivity = mainActivity;
+        View fs = this.mainActivity.getWindow().getDecorView();
+        fs.setOnTouchListener(new View.OnTouchListener(){
+            float x1;
+            float x2;
+            float y1;
+            float y2;
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_DOWN){
+                    x1 = event.getX();
+                    y1 = event.getY();
+                }else if(event.getAction() == MotionEvent.ACTION_UP){
+                    x2 = event.getX();
+                    y2 = event.getY();
+                    movimiento(x1, x2, y1, y2);
+                }
+                return false;
+            }
+        });
     }
 
-    public void generarTablero(){
-        LinearLayout main = findViewById(R.id.main);
-        TextView txt = new TextView(this);
-        txt.setText("asdsadasd");
-        main.addView(txt);
+    private void movimiento(float x1, float x2, float y1, float y2) {
+        float difX = x2-x1;
+        float difY = y2-y1;
+        int movimiento;
+        if(Math.abs(difX) > Math.abs(difY)){
+            if(difX > 0){
+                movimiento = Gusano.DERECHA;
+            }else{
+                movimiento = Gusano.IZQUIERDA;
+            }
+        }else{
+            if(difY > 0){
+                movimiento = Gusano.ABAJO;
+            }else{
+                movimiento = Gusano.ARRIBA;
+            }
+        }
+        System.out.println("Movimiento: " + movimiento);
+        this.mainActivity.cambiarDireccion(movimiento);
     }
 
-    @Override
-    public void update(Observable o, Object arg) {
-
-    }
 }
