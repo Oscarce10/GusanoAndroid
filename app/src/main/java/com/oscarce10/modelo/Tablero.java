@@ -36,33 +36,4 @@ public class Tablero extends Observable {
         return new Coordenada(fila, columna);
     }
 
-//    public int moverGusano(){
-//        while( (this.gusano.getGusano().get(0).getFila() > -1 && this.gusano.getGusano().get(0).getFila() < ALTO) ||
-//                (this.gusano.getGusano().get(0).getColumna() > -1 && this.gusano.getGusano().get(0).getColumna() < ANCHO )){
-//            switch (this.gusano.getGusano().get(0).getDireccion()){
-//                case Gusano.DERECHA:
-//                    this.gusano.avanzaDerecha();
-//                    break;
-//
-//                case Gusano.ABAJO:
-//                    this.gusano.avanzaAbajo();
-//                    break;
-//
-//                case Gusano.IZQUIERDA:
-//                    this.gusano.avanzaIzquierda();
-//                    break;
-//
-//                case Gusano.ARRIBA:
-//                    this.gusano.avanzaArriba();
-//                    break;
-//            }
-//            this.tablero[this.gusano.getGusano().get(0).getFila()][this.gusano.getGusano().get(0).getColumna()] = 1;
-//            this.tablero[this.gusano.getGusano().get(this.gusano.getGusano().size() - 1).getFila()]
-//                    [this.gusano.getGusano().get(this.gusano.getGusano().size() - 1).getColumna()] = 0;
-//            return this.gusano.getGusano().get(0).getDireccion();
-//
-//        }
-//        return Gusano.PERDER;
-//    }
-
 }

@@ -2,6 +2,7 @@ package com.oscarce10.gusano;
 
 import android.graphics.Color;
 import android.graphics.Point;
+import android.os.Build;
 import android.view.Display;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
@@ -9,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.oscarce10.modelo.Coordenada;
@@ -70,6 +72,7 @@ public class PartidaVTA implements Observer {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void update(Observable o, Object arg) {
         ArrayList <Object> args = (ArrayList<Object>) arg;
@@ -116,27 +119,26 @@ public class PartidaVTA implements Observer {
             apple.setMaxWidth(tiles[0][0].getMaxWidth());
             tiles[fruta.getFila()][fruta.getColumna()].addView(apple);
         }else if(accion == Partida.REMOVER){
-            Coordenada aux = (Coordenada) args.get(1);
-            // Se elimina la cola del tablero
-            final Coordenada finalAux2 = aux;
-            final ConstraintLayout field = new ConstraintLayout(this.juego);
-            field.setBackgroundResource(R.drawable.tile);
-            field.setMinHeight((int) (height * 0.65 / Tablero.ALTO));
-            field.setMinWidth((int) (width * 0.90 / Tablero.ANCHO));
-            field.setMaxHeight((int) (height * 0.65 / Tablero.ALTO));
-            field.setMaxWidth((int) (width * 0.90 / Tablero.ANCHO));
-            // Only the original thread that created a view hierarchy can touch its views
-            // https://es.stackoverflow.com/questions/250763/only-the-original-thread-that-created-a-view-hierarchy-can-touch-its-views
-            this.juego.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    grilla.removeViewAt((finalAux2.getFila() * Tablero.ANCHO) + finalAux2.getColumna());
-                    grilla.addView(field, (finalAux2.getFila() * Tablero.ANCHO) + finalAux2.getColumna());
-                }
-            });
-
+            Coordenada aux = (Coordenada) args.get(2);
+                // Se elimina la cola del tablero
+                final Coordenada finalAux2 = aux;
+                final ConstraintLayout field = new ConstraintLayout(this.juego);
+                field.setBackgroundResource(R.drawable.tile);
+                field.setMinHeight((int) (height * 0.65 / Tablero.ALTO));
+                field.setMinWidth((int) (width * 0.90 / Tablero.ANCHO));
+                field.setMaxHeight((int) (height * 0.65 / Tablero.ALTO));
+                field.setMaxWidth((int) (width * 0.90 / Tablero.ANCHO));
+                // Only the original thread that created a view hierarchy can touch its views
+                // https://es.stackoverflow.com/questions/250763/only-the-original-thread-that-created-a-view-hierarchy-can-touch-its-views
+                this.juego.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        grilla.removeViewAt((finalAux2.getFila() * Tablero.ANCHO) + finalAux2.getColumna());
+                        grilla.addView(field, (finalAux2.getFila() * Tablero.ANCHO) + finalAux2.getColumna());
+                    }
+                });
             // Agregar nueva cabeza a la vista dependiendo de la direccion
-            aux = (Coordenada) args.get(2);
+            aux = (Coordenada) args.get(3);
             ImageView gus = new ImageView(this.juego);
             switch (Integer.parseInt(args.get(4).toString())){
                 case Gusano.ABAJO:
@@ -177,7 +179,7 @@ public class PartidaVTA implements Observer {
 
 
             // Eliminar la antigua cabeza y reemplazar por el cuerpo
-            aux = (Coordenada) args.get(3);
+            aux = (Coordenada) args.get(1);
             campo = new ConstraintLayout(this.juego);
             campo.setBackgroundResource(R.drawable.ic_rec);
             gus = new ImageView(this.juego);
@@ -208,7 +210,7 @@ public class PartidaVTA implements Observer {
                     Toast.makeText(juego, "Ha perdido", Toast.LENGTH_SHORT).show();
                 }
             });
-            this.juego.finish();
+            this.juego.perder();
         }
 
 

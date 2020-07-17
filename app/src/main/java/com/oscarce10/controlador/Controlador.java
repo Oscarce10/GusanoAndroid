@@ -50,7 +50,7 @@ public class Controlador {
                 movimiento = Gusano.ARRIBA;
             }
         }
-        System.out.println("Movimiento: " + movimiento);
+        // Si se mueve solo es cambiar de direccion al gusano y ya
         this.mainActivity.cambiarDireccion(movimiento);
     }
 
