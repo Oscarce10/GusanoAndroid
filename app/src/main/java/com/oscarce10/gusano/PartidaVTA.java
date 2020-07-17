@@ -117,25 +117,29 @@ public class PartidaVTA implements Observer {
             apple.setMinimumWidth(tiles[0][0].getMinWidth());
             apple.setMaxWidth(tiles[0][0].getMaxWidth());
             tiles[fruta.getFila()][fruta.getColumna()].addView(apple);
-        }else if(accion == Partida.REMOVER){
-            Coordenada aux = (Coordenada) args.get(1);
-            // Se elimina la cola del tablero
-            final Coordenada finalAux2 = aux;
-            final ConstraintLayout field = new ConstraintLayout(this.juego);
-            field.setBackgroundResource(R.drawable.tile);
-            field.setMinHeight((int) (height * 0.65 / Tablero.ALTO));
-            field.setMinWidth((int) (width * 0.90 / Tablero.ANCHO));
-            field.setMaxHeight((int) (height * 0.65 / Tablero.ALTO));
-            field.setMaxWidth((int) (width * 0.90 / Tablero.ANCHO));
-            // Only the original thread that created a view hierarchy can touch its views
-            // https://es.stackoverflow.com/questions/250763/only-the-original-thread-that-created-a-view-hierarchy-can-touch-its-views
-            this.juego.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    grilla.removeViewAt((finalAux2.getFila() * Tablero.ANCHO) + finalAux2.getColumna());
-                    grilla.addView(field, (finalAux2.getFila() * Tablero.ANCHO) + finalAux2.getColumna());
-                }
-            });
+        }else if(accion == Partida.REMOVER || accion == Partida.SUMAR){
+            Coordenada aux;
+
+            if (accion == Partida.REMOVER){
+                aux = (Coordenada) args.get(1);
+                // Se elimina la cola del tablero
+                final Coordenada finalAux2 = aux;
+                final ConstraintLayout field = new ConstraintLayout(this.juego);
+                field.setBackgroundResource(R.drawable.tile);
+                field.setMinHeight((int) (height * 0.65 / Tablero.ALTO));
+                field.setMinWidth((int) (width * 0.90 / Tablero.ANCHO));
+                field.setMaxHeight((int) (height * 0.65 / Tablero.ALTO));
+                field.setMaxWidth((int) (width * 0.90 / Tablero.ANCHO));
+                // Only the original thread that created a view hierarchy can touch its views
+                // https://es.stackoverflow.com/questions/250763/only-the-original-thread-that-created-a-view-hierarchy-can-touch-its-views
+                this.juego.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        grilla.removeViewAt((finalAux2.getFila() * Tablero.ANCHO) + finalAux2.getColumna());
+                        grilla.addView(field, (finalAux2.getFila() * Tablero.ANCHO) + finalAux2.getColumna());
+                    }
+                });
+            }
 
             // Agregar nueva cabeza a la vista dependiendo de la direccion
             aux = (Coordenada) args.get(2);
@@ -164,7 +168,6 @@ public class PartidaVTA implements Observer {
             ConstraintLayout campo = new ConstraintLayout(this.juego);
             campo.setBackgroundResource(R.drawable.ic_rec);
             campo.addView(gus);
-
             // Only the original thread that created a view hierarchy can touch its views
             // https://es.stackoverflow.com/questions/250763/only-the-original-thread-that-created-a-view-hierarchy-can-touch-its-views
             final Coordenada finalAux = aux; // Final porque asi lo exige la inner
@@ -176,6 +179,7 @@ public class PartidaVTA implements Observer {
                     grilla.addView(finalCampo, (finalAux.getFila() * Tablero.ANCHO) + finalAux.getColumna());
                 }
             });
+
 
 
             // Eliminar la antigua cabeza y reemplazar por el cuerpo
@@ -200,6 +204,34 @@ public class PartidaVTA implements Observer {
                     grilla.addView(finalCampo1, (finalAux1.getFila() * Tablero.ANCHO) + finalAux1.getColumna());
                 }
             });
+
+            // Agregar nueva fruta al tablero
+            if (accion == Partida.SUMAR){
+                aux = (Coordenada) args.get(5);
+                final Coordenada auxFruta = aux;
+                final ConstraintLayout fieldFruta = new ConstraintLayout(this.juego);
+                fieldFruta.setBackgroundResource(R.drawable.tile);
+                fieldFruta.setMinHeight((int) (height * 0.65 / Tablero.ALTO));
+                fieldFruta.setMinWidth((int) (width * 0.90 / Tablero.ANCHO));
+                fieldFruta.setMaxHeight((int) (height * 0.65 / Tablero.ALTO));
+                fieldFruta.setMaxWidth((int) (width * 0.90 / Tablero.ANCHO));
+                ImageView apple = new ImageView(this.juego);
+                apple.setBackgroundResource(R.drawable.ic_appletiny);
+                apple.setMaxHeight(tiles[0][0].getMaxHeight());
+                apple.setMinimumHeight(tiles[0][0].getMaxHeight());
+                apple.setMinimumWidth(tiles[0][0].getMinWidth());
+                apple.setMaxWidth(tiles[0][0].getMaxWidth());
+                fieldFruta.addView(apple);
+                // Only the original thread that created a view hierarchy can touch its views
+                // https://es.stackoverflow.com/questions/250763/only-the-original-thread-that-created-a-view-hierarchy-can-touch-its-views
+                this.juego.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        grilla.removeViewAt((auxFruta.getFila() * Tablero.ANCHO) + auxFruta.getColumna());
+                        grilla.addView(fieldFruta, (auxFruta.getFila() * Tablero.ANCHO) + auxFruta.getColumna());
+                    }
+                });
+            }
 
         }else if (accion == Partida.PERDER){
             // Toca para que muestre toast

@@ -73,9 +73,9 @@ public class Partida extends Observable {
     public boolean moverGusano(){
         ArrayList <Object> args = new ArrayList<>();
         // Se toma la cola del gusano
-        Coordenada cola = this.gusano.getGusano().get(this.gusano.getGusano().size() - 1);
-        // Se toma la cabeza del gusano
-        Coordenada cabeza = this.gusano.getGusano().get(0);
+        Coordenada cola =  new Coordenada(this.gusano.getGusano().get(this.gusano.getGusano().size() - 1).getFila(), this.gusano.getGusano().get(this.gusano.getGusano().size() - 1).getColumna());
+        // Se toma la cabeza del gusano para despues ser cambiada por cuerpo
+        Coordenada cabeza = new Coordenada(this.gusano.getGusano().get(0).getFila(), this.gusano.getGusano().get(0).getColumna());
 
         // Cada coordenada del cuerpo la hace igual a la anterior tanto en las coordenadas como en el tablero y todo se vuelve cuerpo
         for (int i = this.gusano.getGusano().size() - 1; i >= 1 ; i--){
@@ -146,10 +146,11 @@ public class Partida extends Observable {
             // 0. Se marca directriz de REMOVER
             args.add(REMOVER);
         }
-        // Si aggara la fruta
+        // Si agarra la fruta
         else {
-            // 0. Se marca directriz de REMOVER
+            // 0. Se marca directriz de SUMAR
             args.add(SUMAR);
+            gusano.getGusano().add(cola);
         }
 
         // En tablero se hace la nueva cabeza
@@ -158,10 +159,18 @@ public class Partida extends Observable {
         args.add(cola);
         // 3. Se envia solo la cabeza para ser agregada a la vista
         args.add(this.gusano.getGusano().get(0));
-        // 4. Se envia solo la cola nueva para ser dibujada
-        args.add(this.gusano.getGusano().get(this.gusano.getGusano().size() - 1));
+        System.out.println("NUEVA CAB x: " + this.gusano.getGusano().get(0).getFila() + " y: " + this.gusano.getGusano().get(0).getColumna());
+        // 4. Se envia solo la cabeza antigua para ser cambiada por cuerpo
+        args.add(cabeza);
         // 5. Se envia la direccion del gusano
         args.add(this.gusano.getDireccion());
+
+        if (Integer.parseInt(args.get(0).toString()) == SUMAR){
+            args.add(this.obT.agregarFruta());
+            args.add(cola);
+        }
+
+
         this.setChanged();
         this.notifyObservers(args);
         return true;
