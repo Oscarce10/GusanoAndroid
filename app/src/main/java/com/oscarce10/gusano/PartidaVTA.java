@@ -166,7 +166,7 @@ public class PartidaVTA implements Observer {
             gus.setMinimumWidth(tiles[0][0].getMinWidth());
             gus.setMaxWidth(tiles[0][0].getMaxWidth());
             ConstraintLayout campo = new ConstraintLayout(this.juego);
-            campo.setBackgroundResource(R.drawable.ic_rec);
+            campo.setBackgroundResource(R.drawable.tile);
             campo.addView(gus);
             // Only the original thread that created a view hierarchy can touch its views
             // https://es.stackoverflow.com/questions/250763/only-the-original-thread-that-created-a-view-hierarchy-can-touch-its-views
@@ -185,7 +185,7 @@ public class PartidaVTA implements Observer {
             // Eliminar la antigua cabeza y reemplazar por el cuerpo
             aux = (Coordenada) args.get(3);
             campo = new ConstraintLayout(this.juego);
-            campo.setBackgroundResource(R.drawable.ic_rec);
+            campo.setBackgroundResource(R.drawable.tile);
             gus = new ImageView(this.juego);
             gus.setBackgroundResource(R.drawable.ic_bodygametiny);
             gus.setMaxHeight(tiles[0][0].getMaxHeight());
@@ -207,6 +207,7 @@ public class PartidaVTA implements Observer {
 
             // Agregar nueva fruta al tablero
             if (accion == Partida.SUMAR){
+                final int score = Integer.parseInt(args.get(7).toString());
                 aux = (Coordenada) args.get(5);
                 final Coordenada auxFruta = aux;
                 final ConstraintLayout fieldFruta = new ConstraintLayout(this.juego);
@@ -227,6 +228,8 @@ public class PartidaVTA implements Observer {
                 this.juego.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        scoreNum.setText("" + score);
+                        System.out.println("SCORE + " + score);
                         grilla.removeViewAt((auxFruta.getFila() * Tablero.ANCHO) + auxFruta.getColumna());
                         grilla.addView(fieldFruta, (auxFruta.getFila() * Tablero.ANCHO) + auxFruta.getColumna());
                     }

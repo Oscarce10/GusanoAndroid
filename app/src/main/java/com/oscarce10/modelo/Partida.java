@@ -67,7 +67,7 @@ public class Partida extends Observable {
             }
         };
         Timer timer = new Timer();
-        timer.scheduleAtFixedRate(timerTask, 0, 500);
+        timer.schedule(timerTask, 0, 250);
     }
 
     public boolean moverGusano(){
@@ -168,6 +168,8 @@ public class Partida extends Observable {
         if (Integer.parseInt(args.get(0).toString()) == SUMAR){
             args.add(this.obT.agregarFruta());
             args.add(cola);
+            this.score++;
+            args.add(this.score);
         }
 
 
