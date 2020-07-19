@@ -1,8 +1,11 @@
 package com.oscarce10.controlador;
 
 
+import android.os.Build;
 import android.view.MotionEvent;
 import android.view.View;
+
+import androidx.annotation.RequiresApi;
 
 import com.oscarce10.gusano.Juego;
 import com.oscarce10.modelo.Gusano;
@@ -33,6 +36,7 @@ public class Controlador {
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void movimiento(float x1, float x2, float y1, float y2) {
         float difX = x2-x1;
         float difY = y2-y1;

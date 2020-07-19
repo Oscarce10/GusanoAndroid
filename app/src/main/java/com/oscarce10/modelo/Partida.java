@@ -3,6 +3,9 @@ package com.oscarce10.modelo;
 import android.os.Looper;
 import android.widget.Toast;
 
+import com.oscarce10.gusano.R;
+
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Timer;
@@ -13,6 +16,8 @@ public class Partida extends Observable {
     private int record;
     private Tablero obT;
     private Gusano gusano;
+    private  int duracion;
+    private Timer timer;
     public static final int AGREGAR = 1;
     public static final int REMOVER = 2;
     public static final int PERDER = -1;
@@ -21,6 +26,7 @@ public class Partida extends Observable {
 
     public Partida(int score, int record, int[][] tablero) {
         this.score = score;
+        this.duracion= 500;
         this.record = record;
         this.obT = new Tablero();
     }
@@ -28,6 +34,7 @@ public class Partida extends Observable {
     public Partida() {
         this.score = 0;
         this.record = 0;
+        this.duracion= 500;
         this.obT = new Tablero();
         this.gusano = new Gusano();
     }
@@ -66,8 +73,8 @@ public class Partida extends Observable {
                     this.cancel();
             }
         };
-        Timer timer = new Timer();
-        timer.schedule(timerTask, 0, 250);
+        this.timer = new Timer();
+        this.timer.schedule(timerTask, 60, this.duracion);
     }
 
     public boolean moverGusano(){
@@ -151,6 +158,19 @@ public class Partida extends Observable {
             // 0. Se marca directriz de SUMAR
             args.add(SUMAR);
             gusano.getGusano().add(cola);
+            this.timer.cancel();
+            this.timer= new Timer();
+            this.duracion-=15;
+            TimerTask timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    if(!moverGusano())
+                        this.cancel();
+                }
+            };
+            timer.schedule(timerTask, 60, duracion);
+            System.out.println("--------------------------"+this.duracion);
+
         }
 
         // En tablero se hace la nueva cabeza
