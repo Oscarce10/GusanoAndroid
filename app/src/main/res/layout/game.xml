@@ -10,20 +10,20 @@
     <!-- ***************** GUIDELINES ********************** -->
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/hor5"
+        android:id="@+id/hor2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_begin="20dp"
-        app:layout_constraintGuide_percent="0.05"/>
+        app:layout_constraintGuide_percent="0.02"/>
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/hor10"
+        android:id="@+id/hor12"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_begin="20dp"
-        app:layout_constraintGuide_percent="0.10"/>
+        app:layout_constraintGuide_percent="0.12"/>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/hor15"
@@ -48,7 +48,15 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_begin="20dp"
-        app:layout_constraintGuide_percent="0.25"/>
+        app:layout_constraintGuide_percent="0.24"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/hor30"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="20dp"
+        app:layout_constraintGuide_percent="0.3"/>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/hor50"
@@ -99,6 +107,14 @@
         app:layout_constraintGuide_begin="0dp"
         app:layout_constraintGuide_percent="0.9"/>
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/hor96"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="0dp"
+        app:layout_constraintGuide_percent="0.96"/>
+
     <!-- ********************END GUIDELINES ******************** -->
 
 
@@ -106,10 +122,10 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="@id/hor20"
+        app:layout_constraintBottom_toBottomOf="@id/hor12"
         app:layout_constraintEnd_toEndOf="@id/ver90"
         app:layout_constraintStart_toStartOf="@id/ver10"
-        app:layout_constraintTop_toTopOf="@id/hor5">
+        app:layout_constraintTop_toTopOf="@id/hor2">
 
             <LinearLayout
                 android:id="@+id/infoLinear"
@@ -127,7 +143,7 @@
                             android:text="Score"
                             android:fontFamily="@font/balsamiq"
                             android:textAlignment="center"
-                            android:textSize="24sp" />
+                            android:textSize="20sp" />
 
                         <TextView
                             android:id="@+id/scoreNum"
@@ -135,7 +151,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/balsamiq"
                             android:textAlignment="center"
-                            android:textSize="24sp" />
+                            android:textSize="20sp" />
                     </LinearLayout>
 
                 <Space
@@ -158,7 +174,7 @@
                             android:text="Record"
                             android:fontFamily="@font/balsamiq"
                             android:textAlignment="center"
-                            android:textSize="24sp" />
+                            android:textSize="20sp" />
 
                         <TextView
                             android:id="@+id/recordNum"
@@ -166,10 +182,83 @@
                             android:layout_height="wrap_content"
                             android:textAlignment="center"
                             android:fontFamily="@font/balsamiq"
-                            android:textSize="24sp" />
+                            android:textSize="20sp" />
                     </LinearLayout>
 
             </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/infocontainer"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/hor20"
+        app:layout_constraintEnd_toStartOf="@+id/ver90"
+        app:layout_constraintStart_toStartOf="@+id/ver10"
+        app:layout_constraintTop_toTopOf="@+id/hor15"
+        app:layout_constraintVertical_bias="0.133">
+
+
+        <TextView
+            android:id="@+id/txtTiempo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/balsamiq"
+            android:gravity="center"
+            android:text="Tiempo de juego"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/horasTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/balsamiq"
+                android:gravity="center"
+                android:text="00"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/colon1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/balsamiq"
+                android:gravity="center"
+                android:text=" : "
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/minutosTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:fontFamily="@font/balsamiq"
+                android:text="00"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/colon2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/balsamiq"
+                android:gravity="center"
+                android:text=" : "
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/segundosTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/balsamiq"
+                android:text="00"
+                android:textSize="18sp" />
+        </LinearLayout>
+    </LinearLayout>
 
 
 
@@ -177,10 +266,10 @@
             android:id="@+id/grilla"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@id/hor100"
+            app:layout_constraintBottom_toBottomOf="@id/hor96"
             app:layout_constraintEnd_toEndOf="@id/ver90"
             app:layout_constraintStart_toStartOf="@id/ver10"
-            app:layout_constraintTop_toTopOf="@id/hor15"
+            app:layout_constraintTop_toTopOf="@id/hor30"
             android:layout_gravity="center">
 
         </GridLayout>

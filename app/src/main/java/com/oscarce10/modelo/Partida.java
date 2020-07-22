@@ -1,22 +1,24 @@
 package com.oscarce10.modelo;
 
-import android.os.Looper;
-import android.widget.Toast;
+import com.oscarce10.controlador.Tiempo;
 
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Handler;
 
 public class Partida extends Observable {
     private int score;
     private int record;
     private Tablero obT;
     private Gusano gusano;
+    private Tiempo tiempo;
     public static final int AGREGAR = 1;
     public static final int REMOVER = 2;
     public static final int PERDER = -1;
     public static final int SUMAR = 3;
+    public static final int TIME = 4;
 
 
     public Partida(int score, int record, int[][] tablero) {
@@ -30,6 +32,7 @@ public class Partida extends Observable {
         this.record = 0;
         this.obT = new Tablero();
         this.gusano = new Gusano();
+        this.tiempo = new Tiempo();
     }
 
     public int getScore() {
@@ -59,15 +62,25 @@ public class Partida extends Observable {
         obG.add(this.obT.agregarFruta());
         this.setChanged();
         this.notifyObservers(obG);
+
+        final Timer timer = new Timer();
         final TimerTask timerTask = new TimerTask() {
             @Override
             public void run() {
                 if(!moverGusano())
                     this.cancel();
+                }
+        };
+
+        timer.schedule(timerTask, 0, 300);
+        final TimerTask elapsedTime = new TimerTask() {
+            @Override
+            public void run() {
+                avanzaTiempo();
             }
         };
-        Timer timer = new Timer();
-        timer.schedule(timerTask, 0, 250);
+        Timer timerTiempo = new Timer();
+        timerTiempo.schedule(elapsedTime, 0, 1000);
     }
 
     public boolean moverGusano(){
@@ -159,7 +172,6 @@ public class Partida extends Observable {
         args.add(cola);
         // 3. Se envia solo la cabeza para ser agregada a la vista
         args.add(this.gusano.getGusano().get(0));
-        System.out.println("NUEVA CAB x: " + this.gusano.getGusano().get(0).getFila() + " y: " + this.gusano.getGusano().get(0).getColumna());
         // 4. Se envia solo la cabeza antigua para ser cambiada por cuerpo
         args.add(cabeza);
         // 5. Se envia la direccion del gusano
@@ -184,4 +196,16 @@ public class Partida extends Observable {
         }
 
     }
+
+    public void avanzaTiempo(){
+        this.tiempo.avanza();
+        ArrayList <Object> args = new ArrayList<>();
+        args.add(TIME);
+        args.add(this.tiempo.getSegundos());
+        args.add(this.tiempo.getMinutos());
+        args.add(this.tiempo.getHoras());
+        this.setChanged();
+        this.notifyObservers(args);
+    }
+
 }

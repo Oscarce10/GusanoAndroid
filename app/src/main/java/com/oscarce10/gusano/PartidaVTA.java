@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.oscarce10.controlador.Tiempo;
 import com.oscarce10.modelo.Coordenada;
 import com.oscarce10.modelo.Gusano;
 import com.oscarce10.modelo.Partida;
@@ -25,6 +26,9 @@ public class PartidaVTA implements Observer {
     private TextView scoreNum;
     private TextView recordNum;
     private GridLayout grilla;
+    private TextView txtSegundos;
+    private TextView txtMinutos;
+    private TextView txtHoras;
     private ConstraintLayout main;
     private ConstraintLayout tiles[][];
     private Juego juego;
@@ -68,7 +72,9 @@ public class PartidaVTA implements Observer {
                 grilla.addView(tiles[i][j]);
             }
         }
-
+        this.txtSegundos = juego.findViewById(R.id.segundosTxt);
+        this.txtMinutos = juego.findViewById(R.id.minutosTxt);
+        this.txtHoras = juego.findViewById(R.id.horasTxt);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -229,7 +235,6 @@ public class PartidaVTA implements Observer {
                     @Override
                     public void run() {
                         scoreNum.setText("" + score);
-                        System.out.println("SCORE + " + score);
                         grilla.removeViewAt((auxFruta.getFila() * Tablero.ANCHO) + auxFruta.getColumna());
                         grilla.addView(fieldFruta, (auxFruta.getFila() * Tablero.ANCHO) + auxFruta.getColumna());
                     }
@@ -246,8 +251,21 @@ public class PartidaVTA implements Observer {
                 }
             });
             this.juego.perder();
+        } else if (accion == Partida.TIME){
+            final int segundos = Integer.parseInt(args.get(1).toString());
+            final int minutos = Integer.parseInt(args.get(2).toString());
+            final int horas = Integer.parseInt(args.get(3).toString());
+            // Only the original thread that created a view hierarchy can touch its views
+            // https://es.stackoverflow.com/questions/250763/only-the-original-thread-that-created-a-view-hierarchy-can-touch-its-views
+            this.juego.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    txtSegundos.setText( ((segundos < 10)?"0":"") + segundos);
+                    txtMinutos.setText(((minutos < 10)?"0":"") + minutos);
+                    txtHoras.setText(((horas < 10)?"0":"") + horas);
+                }
+            });
         }
-
 
     }
 }
