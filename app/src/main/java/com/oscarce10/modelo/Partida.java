@@ -139,6 +139,7 @@ public class Partida extends Observable {
                 break;
         }
 
+
         // Si la cabeza toca al cuerpo del gusano
         if(this.obT.getTablero()[this.gusano.getGusano().get(0).getFila()][this.gusano.getGusano().get(0).getColumna()] == Tablero.CUERPO){
             args.add(PERDER);
@@ -156,8 +157,7 @@ public class Partida extends Observable {
         // Si agarra la fruta
         else {
             // 0. Se marca directriz de SUMAR
-            args.add(SUMAR);
-            gusano.getGusano().add(cola);
+
             this.timer.cancel();
             this.timer= new Timer();
             this.duracion-=15;
@@ -168,7 +168,9 @@ public class Partida extends Observable {
                         this.cancel();
                 }
             };
-            timer.schedule(timerTask, 60, duracion);
+            gusano.getGusano().add(cola);
+            timer.schedule(timerTask, duracion, duracion);
+            args.add(SUMAR);
             System.out.println("--------------------------"+this.duracion);
 
         }
