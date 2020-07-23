@@ -2,6 +2,9 @@ package com.oscarce10.modelo;
 
 import com.oscarce10.controlador.Tiempo;
 
+import com.oscarce10.gusano.R;
+
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Timer;
@@ -14,6 +17,8 @@ public class Partida extends Observable {
     private Tablero obT;
     private Gusano gusano;
     private Tiempo tiempo;
+    private  int duracion;
+    private Timer timer;
     public static final int AGREGAR = 1;
     public static final int REMOVER = 2;
     public static final int PERDER = -1;
@@ -23,6 +28,7 @@ public class Partida extends Observable {
 
     public Partida(int score, int record, int[][] tablero) {
         this.score = score;
+        this.duracion= 500;
         this.record = record;
         this.obT = new Tablero();
     }
@@ -30,6 +36,7 @@ public class Partida extends Observable {
     public Partida() {
         this.score = 0;
         this.record = 0;
+        this.duracion= 500;
         this.obT = new Tablero();
         this.gusano = new Gusano();
         this.tiempo = new Tiempo();
@@ -84,8 +91,9 @@ public class Partida extends Observable {
 
             }
         };
-        timer.schedule(timerTask, 1000, 300);
 
+        this.timer = new Timer();
+        this.timer.schedule(timerTask, 1000, this.duracion);
     }
 
     public boolean moverGusano(){
@@ -150,6 +158,7 @@ public class Partida extends Observable {
                 break;
         }
 
+
         // Si la cabeza toca al cuerpo del gusano
         if(this.obT.getTablero()[this.gusano.getGusano().get(0).getFila()][this.gusano.getGusano().get(0).getColumna()] == Tablero.CUERPO){
             args.add(PERDER);
@@ -167,8 +176,22 @@ public class Partida extends Observable {
         // Si agarra la fruta
         else {
             // 0. Se marca directriz de SUMAR
-            args.add(SUMAR);
+
+            this.timer.cancel();
+            this.timer= new Timer();
+            this.duracion-=15;
+            TimerTask timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    if(!moverGusano())
+                        this.cancel();
+                }
+            };
             gusano.getGusano().add(cola);
+            timer.schedule(timerTask, duracion, duracion);
+            args.add(SUMAR);
+            System.out.println("--------------------------"+this.duracion);
+
         }
 
         // En tablero se hace la nueva cabeza

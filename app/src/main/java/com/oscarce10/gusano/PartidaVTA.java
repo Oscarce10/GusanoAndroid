@@ -1,8 +1,10 @@
 package com.oscarce10.gusano;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Build;
+import android.os.Environment;
 import android.view.Display;
 import android.widget.GridLayout;
 import android.widget.ImageView;
@@ -10,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.oscarce10.controlador.Tiempo;
@@ -18,11 +21,21 @@ import com.oscarce10.modelo.Gusano;
 import com.oscarce10.modelo.Partida;
 import com.oscarce10.modelo.Tablero;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Scanner;
 
-public class PartidaVTA implements Observer {
+public class PartidaVTA implements Observer   {
     private TextView scoreNum;
     private TextView recordNum;
     private GridLayout grilla;
@@ -41,10 +54,24 @@ public class PartidaVTA implements Observer {
         this.grilla = grilla;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public PartidaVTA(Juego juego, int record) {
         this.juego = juego;
         this.scoreNum = juego.findViewById(R.id.scoreNum);
         this.recordNum = juego.findViewById(R.id.recordNum);
+        String puntuacion_maxima;
+        puntuacion_maxima = juego.getPreferences().getString("record","");
+        System.out.println(".................................."+puntuacion_maxima);
+        if(puntuacion_maxima.length()>0){
+            System.out.println("Entro trueeee");
+            recordNum.setText(puntuacion_maxima);
+        }else{
+            SharedPreferences.Editor edit = juego.getPreferences().edit();
+            edit.putString("record", "0");
+            edit.commit();
+            puntuacion_maxima = juego.getPreferences().getString("record","");
+            recordNum.setText(puntuacion_maxima);
+        }
         this.grilla = juego.findViewById(R.id.grilla);
         Display display = juego.getWindowManager().getDefaultDisplay();
         Point size = new Point();
@@ -54,7 +81,6 @@ public class PartidaVTA implements Observer {
         this.main = juego.findViewById(R.id.main);
         main.setBackgroundColor(Color.parseColor("#273238"));
 
-        this.recordNum.setText("" + record);
         this.scoreNum.setText("" + 0);
 
         tiles = new ConstraintLayout[Tablero.ALTO][Tablero.ANCHO];
@@ -244,6 +270,11 @@ public class PartidaVTA implements Observer {
         }else if (accion == Partida.PERDER){
             // Toca para que muestre toast
             // https://es.stackoverflow.com/questions/250763/only-the-original-thread-that-created-a-view-hierarchy-can-touch-its-views
+            if(Integer.parseInt(String.valueOf(scoreNum.getText()))>Integer.parseInt(String.valueOf(recordNum.getText()))){
+                    SharedPreferences.Editor edit = juego.getPreferences().edit();
+                    edit.putString("record", String.valueOf(scoreNum.getText()));
+                    edit.commit();
+            }
             this.juego.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {

@@ -1,19 +1,12 @@
 package com.oscarce10.gusano;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Vibrator;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.oscarce10.controlador.Controlador;
 import com.oscarce10.modelo.Partida;
 
@@ -22,11 +15,14 @@ public class Juego extends AppCompatActivity {
     private Partida partida;
     private PartidaVTA partidaVTA;
     private Controlador controlTouch;
+    private SharedPreferences record;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game);
+        record = getSharedPreferences("PrefencesRecord", Context.MODE_PRIVATE);
         this.partida = new Partida();
         this.partidaVTA = new PartidaVTA(this, this.partida.getRecord());
         this.controlTouch = new Controlador(this);
@@ -34,6 +30,9 @@ public class Juego extends AppCompatActivity {
         this.partida.iniciarPartida();
         }
 
+    public  SharedPreferences getPreferences(){
+        return record;
+    }
     public void cambiarDireccion(int direccion){
         this.partida.cambiarDireccion(direccion);
     }
