@@ -63,16 +63,7 @@ public class Partida extends Observable {
         this.setChanged();
         this.notifyObservers(obG);
 
-        final Timer timer = new Timer();
-        final TimerTask timerTask = new TimerTask() {
-            @Override
-            public void run() {
-                if(!moverGusano())
-                    this.cancel();
-                }
-        };
 
-        timer.schedule(timerTask, 0, 300);
         final TimerTask elapsedTime = new TimerTask() {
             @Override
             public void run() {
@@ -81,6 +72,20 @@ public class Partida extends Observable {
         };
         Timer timerTiempo = new Timer();
         timerTiempo.schedule(elapsedTime, 0, 1000);
+
+        final Timer timer = new Timer();
+        final TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                if(!moverGusano()){
+                    this.cancel();
+                    elapsedTime.cancel();
+                }
+
+            }
+        };
+        timer.schedule(timerTask, 1000, 300);
+
     }
 
     public boolean moverGusano(){

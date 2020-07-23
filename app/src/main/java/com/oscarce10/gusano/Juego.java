@@ -1,14 +1,19 @@
 package com.oscarce10.gusano;
 
-import android.content.Context;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.os.Build;
 import android.os.Bundle;
-
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.os.VibrationEffect;
 import android.os.Vibrator;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import com.oscarce10.controlador.Controlador;
 import com.oscarce10.modelo.Partida;
 
@@ -27,7 +32,7 @@ public class Juego extends AppCompatActivity {
         this.controlTouch = new Controlador(this);
         this.partida.addObserver(this.partidaVTA);
         this.partida.iniciarPartida();
-    }
+        }
 
     public void cambiarDireccion(int direccion){
         this.partida.cambiarDireccion(direccion);

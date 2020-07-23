@@ -14,7 +14,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="20dp"
         app:layout_constraintGuide_percent="0.02"/>
 
     <androidx.constraintlayout.widget.Guideline
@@ -108,12 +107,12 @@
         app:layout_constraintGuide_percent="0.9"/>
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/hor96"
+        android:id="@+id/hor95"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_begin="0dp"
-        app:layout_constraintGuide_percent="0.96"/>
+        app:layout_constraintGuide_percent="0.95"/>
 
     <!-- ********************END GUIDELINES ******************** -->
 
@@ -266,7 +265,7 @@
             android:id="@+id/grilla"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@id/hor96"
+            app:layout_constraintBottom_toBottomOf="@id/hor95"
             app:layout_constraintEnd_toEndOf="@id/ver90"
             app:layout_constraintStart_toStartOf="@id/ver10"
             app:layout_constraintTop_toTopOf="@id/hor30"
