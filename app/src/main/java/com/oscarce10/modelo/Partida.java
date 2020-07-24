@@ -179,7 +179,7 @@ public class Partida extends Observable {
 
             this.timer.cancel();
             this.timer= new Timer();
-            this.duracion-=15;
+            this.duracion-= (this.score < 20 ? 15 : 3);
             TimerTask timerTask = new TimerTask() {
                 @Override
                 public void run() {
