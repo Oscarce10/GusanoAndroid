@@ -8,8 +8,8 @@ import java.util.Observable;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Tablero extends Observable {
-    public static final int ALTO = 22;
-    public static final int ANCHO = 15;
+    public static final int ALTO = 25;
+    public static final int ANCHO = 20;
     private int [][] tablero;
     public static final int CABEZA = 1;
     public static final int CUERPO = 2;
