@@ -58,6 +58,14 @@ public class Partida extends Observable {
         this.record = record;
     }
 
+    public Tiempo getTiempo() {
+        return tiempo;
+    }
+
+    public void setTiempo(Tiempo tiempo) {
+        this.tiempo = tiempo;
+    }
+
     public void iniciarPartida(){
         this.gusano.crearGusano();
         this.obT.getTablero()[this.gusano.getGusano().get(0).getFila()][this.gusano.getGusano().get(0).getColumna()]= Tablero.CABEZA;

@@ -275,12 +275,7 @@ public class PartidaVTA implements Observer   {
                     edit.putString("record", String.valueOf(scoreNum.getText()));
                     edit.commit();
             }
-            this.juego.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(juego, "Ha perdido", Toast.LENGTH_SHORT).show();
-                }
-            });
+
             this.juego.perder();
         } else if (accion == Partida.TIME){
             final int segundos = Integer.parseInt(args.get(1).toString());
