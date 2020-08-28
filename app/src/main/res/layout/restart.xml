@@ -1,71 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <!-- ****************** GUIDELINES ****************** -->
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/hor30"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.3"/>
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/hor70"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.7"/>
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/ver10"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.1"/>
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/ver90"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.9"/>
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/ver25"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.25"/>
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/ver65"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.75"/>
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/hor64"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.64"/>
-
-    <!-- ****************** GUIDELINES ****************** -->
-
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        app:layout_constraintTop_toTopOf="@id/hor30"
-        app:layout_constraintStart_toStartOf="@id/ver10"
-        app:layout_constraintEnd_toEndOf="@id/ver90"
-        app:layout_constraintBottom_toTopOf="@id/hor70"
         android:gravity="center"
         android:background="#273238">
 
@@ -80,42 +18,34 @@
             android:textSize="58sp" />
 
         <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="parent"
-        android:gravity="center"
-        android:background="#273238">
-        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/modak"
+            android:orientation="horizontal"
             android:gravity="center"
-            android:text="Has perdido, tu puntuación final es: "
-            android:textColor="#42A5F5"
-            android:layout_gravity="center"
-            android:textSize="16sp" />
-        <TextView
-            android:id="@+id/txtScore"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/modak"
-            android:gravity="center"
-            android:textColor="#42A5F5"
-            android:layout_gravity="center"
-            android:textSize="16sp" />
-    </LinearLayout>
+            android:background="#273238">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/modak"
+                android:gravity="center"
+                android:text="Has perdido, tu puntuación final es: "
+                android:textColor="#42A5F5"
+                android:layout_gravity="center"
+                android:textSize="16sp" />
+            <TextView
+                android:id="@+id/txtScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/modak"
+                android:gravity="center"
+                android:textColor="#42A5F5"
+                android:layout_gravity="center"
+                android:textSize="16sp" />
+        </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="parent"
             android:gravity="center"
             android:background="#273238">
             <TextView
@@ -131,7 +61,7 @@
                 android:id="@+id/txtTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/modak"
+                android:fontFamily="@font/balsamiq"
                 android:gravity="center"
                 android:textColor="#EF5350"
                 android:layout_gravity="center"
@@ -139,15 +69,11 @@
         </LinearLayout>
 
 
-    </LinearLayout>
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toTopOf="@id/hor64"
-        app:layout_constraintBottom_toBottomOf="@id/hor70"
-        app:layout_constraintStart_toStartOf="@id/ver25"
-        app:layout_constraintEnd_toEndOf="@id/ver65">
+        android:layout_margin="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <Button
             android:id="@+id/btnRetry"
@@ -157,21 +83,5 @@
             android:fontFamily="@font/balsamiq"
             android:textSize="12sp"
             android:background="#66BB6A"/>
-
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
-        <Button
-            android:id="@+id/btnSalir"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Salir"
-            android:fontFamily="@font/balsamiq"
-            android:textSize="12sp"
-            android:background="#EF5350"/>
-
     </LinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

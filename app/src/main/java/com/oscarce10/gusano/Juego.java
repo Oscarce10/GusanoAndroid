@@ -10,6 +10,10 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Vibrator;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+
 import com.oscarce10.controlador.Controlador;
 import com.oscarce10.modelo.Partida;
 
@@ -17,7 +21,6 @@ import com.oscarce10.modelo.Partida;
 public class Juego extends AppCompatActivity {
     private Partida partida;
     private PartidaVTA partidaVTA;
-    private Controlador controlTouch;
     private SharedPreferences record;
 
 
@@ -28,7 +31,7 @@ public class Juego extends AppCompatActivity {
         record = getSharedPreferences("PrefencesRecord", Context.MODE_PRIVATE);
         this.partida = new Partida();
         this.partidaVTA = new PartidaVTA(this, this.partida.getRecord());
-        this.controlTouch = new Controlador(this);
+        Controlador controlTouch = new Controlador(this);
         this.partida.addObserver(this.partidaVTA);
         this.partida.iniciarPartida();
         }
@@ -46,37 +49,34 @@ public class Juego extends AppCompatActivity {
     }
 
     public void perder(){
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Ha perdido el juego\n Puntaje final: " + partida.getScore() + "\nTiempo de juego: " + partida.getTiempo().getMinutos() + ":" + partida.getTiempo().getSegundos())
-                .setPositiveButton("Jugar de nuevo", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        Intent intent = getIntent();
-                        finish();
-                        startActivity(intent);
-                    }
-                })
-                .setNegativeButton("Salir", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        finish();
-                    }
-                });
-        // Create the AlertDialog object and return it
-
+        final AlertDialog.Builder dialogo = new AlertDialog.Builder(this);
+        dialogo.setCancelable(false);
+        dialogo.setView(R.layout.restart);
         this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                builder.create();
-                builder.show();
+                AlertDialog titulo = dialogo.create();
+                titulo.show();
+                TextView score = titulo.findViewById(R.id.txtScore);
+                TextView time = titulo.findViewById(R.id.txtTime);
+                score.setText("" + partida.getScore());
+                time.setText(partida.getTiempo().getHoras() + " : " + partida.getTiempo().getMinutos() + " : " + partida.getTiempo().getSegundos());
+                titulo.findViewById(R.id.btnRetry).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        finish();
+                        startActivity(getIntent());
+                    }
+                });
             }
         });
 
-        //finish();
         Vibrator v = (Vibrator) getSystemService(VIBRATOR_SERVICE);
         // Start without a delay
-// Each element then alternates between vibrate, sleep, vibrate, sleep...
+        // Each element then alternates between vibrate, sleep, vibrate, sleep...
         long[] pattern = {200, 100, 200, 100, 200};
 
-// The '-1' here means to vibrate once, as '-1' is out of bounds in the pattern array
+        // The '-1' here means to vibrate once, as '-1' is out of bounds in the pattern array
         v.vibrate(pattern, -1);
     }
 
